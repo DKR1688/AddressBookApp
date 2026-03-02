@@ -2,9 +2,7 @@ package com.address_book_app.controller;
 
 import com.address_book_app.model.Contact;
 import com.address_book_app.service.ContactService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,12 +11,10 @@ import java.util.List;
 @RequestMapping("/contacts")
 public class ContactController {
 
-	@Autowired
-	private ContactService service;
-	
-	@GetMapping("/")
-	public String home() {
-	    return "Welcome to Address Book Application";
+	private final ContactService service;
+
+	public ContactController(ContactService service) {
+		this.service = service;
 	}
 
 	@GetMapping
@@ -26,24 +22,24 @@ public class ContactController {
 		return service.getAll();
 	}
 
-	@GetMapping("/{phoneNumber}")
-	public Contact getByPhone(@PathVariable String phoneNumber) {
-		return service.getByPhone(phoneNumber);
+	@GetMapping("/{id}")
+	public Contact getById(@PathVariable Long id) {
+		return service.getById(id);
 	}
 
 	@PostMapping
-	public Contact add(@RequestBody Contact contact) {
-		return service.add(contact);
+	public ResponseEntity<Contact> add(@RequestBody Contact contact) {
+		return ResponseEntity.ok(service.add(contact));
 	}
 
-	@PutMapping("/{phoneNumber}")
-	public Contact update(@PathVariable String phoneNumber, @RequestBody Contact contact) {
-		return service.update(phoneNumber, contact);
+	@PutMapping("/{id}")
+	public Contact update(@PathVariable Long id, @RequestBody Contact contact) {
+		return service.update(id, contact);
 	}
 
-	@DeleteMapping("/{phoneNumber}")
-	public String delete(@PathVariable String phoneNumber) {
-		service.delete(phoneNumber);
-		return "Deleted Successfully";
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		service.delete(id);
+		return ResponseEntity.ok("Deleted Successfully");
 	}
 }

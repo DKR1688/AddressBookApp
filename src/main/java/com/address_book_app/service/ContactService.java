@@ -5,45 +5,47 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ContactService {
 
-	private List<Contact> contactList = new ArrayList<>();
+	private final List<Contact> contactList = new ArrayList<>();
+	private final AtomicLong idGenerator = new AtomicLong(1);
 
 	public List<Contact> getAll() {
 		return contactList;
 	}
 
-	public Contact getByPhone(String phoneNumber) {
-		return contactList.stream().filter(c -> c.getPhoneNumber().equals(phoneNumber)).findFirst().orElse(null);
+	public Contact getById(Long id) {
+		return contactList.stream().filter(c -> c.getId().equals(id)).findFirst()
+				.orElseThrow(() -> new RuntimeException("Contact not found"));
 	}
 
 	public Contact add(Contact contact) {
+		contact.setId(idGenerator.getAndIncrement());
 		contactList.add(contact);
 		return contact;
 	}
 
-	public Contact update(String phoneNumber, Contact updated) {
+	public Contact update(Long id, Contact updated) {
 
-		for (Contact c : contactList) {
-			if (c.getPhoneNumber().equals(phoneNumber)) {
+		Contact existing = getById(id);
 
-				c.setFirstName(updated.getFirstName());
-				c.setLastName(updated.getLastName());
-				c.setAddress(updated.getAddress());
-				c.setCity(updated.getCity());
-				c.setState(updated.getState());
-				c.setZip(updated.getZip());
-				c.setEmail(updated.getEmail());
+		existing.setFirstName(updated.getFirstName());
+		existing.setLastName(updated.getLastName());
+		existing.setAddress(updated.getAddress());
+		existing.setCity(updated.getCity());
+		existing.setState(updated.getState());
+		existing.setZip(updated.getZip());
+		existing.setPhoneNumber(updated.getPhoneNumber());
+		existing.setEmail(updated.getEmail());
 
-				return c;
-			}
-		}
-		return null;
+		return existing;
 	}
 
-	public void delete(String phoneNumber) {
-		contactList.removeIf(c -> c.getPhoneNumber().equals(phoneNumber));
+	public void delete(Long id) {
+		Contact contact = getById(id);
+		contactList.remove(contact);
 	}
 }
