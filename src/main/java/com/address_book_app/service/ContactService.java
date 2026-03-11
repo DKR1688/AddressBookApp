@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ContactService {
+	//UC5 -list to add multiple person in address book
 	private final List<Contact> contactList = new ArrayList<>();
 	private final AtomicLong idGenerator = new AtomicLong(1);
 

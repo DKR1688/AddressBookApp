@@ -1,6 +1,6 @@
 package com.address_book_app;
 
-import java.util.Scanner;
+import java.util.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -30,36 +30,42 @@ public class AddressBookAppApplication {
 
 			switch (option) {
 			case 1:
-				System.out.println("\nEnter Contact Details-");
+				char choice;
+				do {
+					System.out.println("\nEnter Contact Details-");
+					System.out.print("First Name: ");
+					String firstName = scanner.nextLine();
 
-				System.out.print("First Name: ");
-				String firstName = scanner.nextLine();
+					System.out.print("Last Name: ");
+					String lastName = scanner.nextLine();
 
-				System.out.print("Last Name: ");
-				String lastName = scanner.nextLine();
+					System.out.print("Address: ");
+					String address = scanner.nextLine();
 
-				System.out.print("Address: ");
-				String address = scanner.nextLine();
+					System.out.print("City: ");
+					String city = scanner.nextLine();
 
-				System.out.print("City: ");
-				String city = scanner.nextLine();
+					System.out.print("State: ");
+					String state = scanner.nextLine();
 
-				System.out.print("State: ");
-				String state = scanner.nextLine();
+					System.out.print("Zip: ");
+					String zip = scanner.nextLine();
 
-				System.out.print("Zip: ");
-				String zip = scanner.nextLine();
+					System.out.print("Phone: ");
+					String phone = scanner.nextLine();
 
-				System.out.print("Phone: ");
-				String phone = scanner.nextLine();
+					System.out.print("Email: ");
+					String email = scanner.nextLine();
 
-				System.out.print("Email: ");
-				String email = scanner.nextLine();
+					Contact contact = new Contact(null, firstName, lastName, address, city, state, zip, phone, email);
+					service.add(contact);
 
-				Contact contact = new Contact(null, firstName, lastName, address, city, state, zip, phone, email);
-
-				service.add(contact);
-				System.out.println("Contact Added Successfully!");
+					System.out.println("Contact Added Successfully!");
+					
+					System.out.print("Add another contact? (y/n): ");
+					choice = scanner.next().charAt(0);
+					scanner.nextLine();
+				} while (choice == 'y' || choice == 'Y');
 				break;
 
 			case 2:
