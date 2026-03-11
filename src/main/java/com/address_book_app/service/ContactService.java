@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ContactService {
-	//UC5 -list to add multiple person in address book
+	//UC5- it's local list to store multiple person in address book
 	private final List<Contact> contactList = new ArrayList<>();
 	private final AtomicLong idGenerator = new AtomicLong(1);
 
@@ -28,7 +28,6 @@ public class ContactService {
 	}
 
 	public Contact update(Long id, Contact updated) {
-
 		Contact existing = getById(id);
 
 		existing.setFirstName(updated.getFirstName());
@@ -48,7 +47,7 @@ public class ContactService {
 		contactList.remove(contact);
 	}
 	
-	//UC3 --- editing existing contact by name
+	//UC3--- editing existing contact by name
 	public Contact findByFirstName(String firstName) {
 		return contactList.stream().filter(c -> c.getFirstName().equalsIgnoreCase(firstName)).findFirst().orElse(null);
 	}
@@ -72,6 +71,7 @@ public class ContactService {
 		return true;
 	}
 	
+	//UC4 --- deleting contact by name
 	public boolean deleteByFirstName(String firstName) {
 		Contact contact = contactList.stream().filter(c -> c.getFirstName().equalsIgnoreCase(firstName)).findFirst()
 				.orElse(null);

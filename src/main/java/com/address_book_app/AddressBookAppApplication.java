@@ -3,135 +3,163 @@ package com.address_book_app;
 import java.util.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.ApplicationContext;
 import com.address_book_app.model.Contact;
 import com.address_book_app.service.ContactService;
 
 @SpringBootApplication
 public class AddressBookAppApplication {
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(AddressBookAppApplication.class, args);
+		ApplicationContext context = SpringApplication.run(AddressBookAppApplication.class, args);
 		ContactService service = context.getBean(ContactService.class);
-
 		Scanner scanner = new Scanner(System.in);
-		int option;
 
-		do { //UC3------
-			System.out.println("\n----------- Address Book Menu ---------");
-			System.out.println("1. Add Contact");
-			System.out.println("2. Edit Contact");
-			System.out.println("3. Delete Contact");
-			System.out.println("4. View All Contacts");
-			System.out.println("5. Exit");
+		Map<String, List<Contact>> addressBookMap = new HashMap<>();
+		while (true) {
+			System.out.println("\n------ ADDRESS BOOK SYSTEM ------");
+			System.out.println("1 Create Address Book");
+			System.out.println("2 Select Address Book");
+			System.out.println("3 Display Address Books");
+			System.out.println("4 Exit");
 
-			System.out.print("Choose option- ");
-			option = scanner.nextInt();
+			int choice = scanner.nextInt();
+			scanner.nextLine();
+			switch (choice) {
+
+			case 1:
+				System.out.print("Enter Address Book Name: ");
+				String bookName = scanner.nextLine();
+
+				addressBookMap.putIfAbsent(bookName, new ArrayList<>());
+				System.out.println("Address Book created!");
+				break;
+
+			case 2:
+				System.out.print("Enter Address Book Name: ");
+				String selectBook = scanner.nextLine();
+
+				if (!addressBookMap.containsKey(selectBook)) {
+					System.out.println("Address Book not found!");
+				} else {
+					addressBookMenu(scanner, service);
+				}
+				break;
+
+			case 3:
+				System.out.println("Available Address Books:");
+				addressBookMap.keySet().forEach(System.out::println);
+				break;
+
+			case 4:
+				System.exit(0);
+			}
+		}
+	}
+
+	private static void addressBookMenu(Scanner scanner, ContactService service) {
+		while (true) {
+			System.out.println("\n----- Address Book Menu -----");
+			System.out.println("1 Add Contact");
+			System.out.println("2 Edit Contact (by First Name)");
+			System.out.println("3 Delete Contact (by First Name)");
+			System.out.println("4 Display Contacts");
+			System.out.println("5 Back");
+
+			int choice = scanner.nextInt();
 			scanner.nextLine();
 
-			switch (option) {
+			switch (choice) {
 			case 1:
-				char choice;
-				do {
-					System.out.println("\nEnter Contact Details-");
-					System.out.print("First Name: ");
-					String firstName = scanner.nextLine();
+				Contact contact = new Contact();
+				System.out.print("First Name: ");
+				contact.setFirstName(scanner.nextLine());
 
-					System.out.print("Last Name: ");
-					String lastName = scanner.nextLine();
+				System.out.print("Last Name: ");
+				contact.setLastName(scanner.nextLine());
 
-					System.out.print("Address: ");
-					String address = scanner.nextLine();
+				System.out.print("Address: ");
+				contact.setAddress(scanner.nextLine());
 
-					System.out.print("City: ");
-					String city = scanner.nextLine();
+				System.out.print("City: ");
+				contact.setCity(scanner.nextLine());
 
-					System.out.print("State: ");
-					String state = scanner.nextLine();
+				System.out.print("State: ");
+				contact.setState(scanner.nextLine());
 
-					System.out.print("Zip: ");
-					String zip = scanner.nextLine();
+				System.out.print("Zip: ");
+				contact.setZip(scanner.nextLine());
 
-					System.out.print("Phone: ");
-					String phone = scanner.nextLine();
+				System.out.print("Phone: ");
+				contact.setPhoneNumber(scanner.nextLine());
 
-					System.out.print("Email: ");
-					String email = scanner.nextLine();
+				System.out.print("Email: ");
+				contact.setEmail(scanner.nextLine());
 
-					Contact contact = new Contact(null, firstName, lastName, address, city, state, zip, phone, email);
-					service.add(contact);
+				service.add(contact);
 
-					System.out.println("Contact Added Successfully!");
-					
-					System.out.print("Add another contact? (y/n): ");
-					choice = scanner.next().charAt(0);
-					scanner.nextLine();
-				} while (choice == 'y' || choice == 'Y');
+				System.out.println("Contact Added!");
 				break;
 
 			case 2:
 				System.out.print("Enter First Name to Edit: ");
-				String nameToEdit = scanner.nextLine();
+				String editName = scanner.nextLine();
 
-				Contact existing = service.findByFirstName(nameToEdit);
-				if (existing == null) {
-					System.out.println("Contact not found!");
-					break;
-				}
+				Contact updated = new Contact();
 
-				System.out.println("Enter New Details-");
-				System.out.print("First Name: ");
-				String newFirst = scanner.nextLine();
+				System.out.print("New Last Name: ");
+				updated.setLastName(scanner.nextLine());
 
-				System.out.print("Last Name: ");
-				String newLast = scanner.nextLine();
+				System.out.print("New Address: ");
+				updated.setAddress(scanner.nextLine());
 
-				System.out.print("Address: ");
-				String newAddress = scanner.nextLine();
+				System.out.print("New City: ");
+				updated.setCity(scanner.nextLine());
 
-				System.out.print("City: ");
-				String newCity = scanner.nextLine();
+				System.out.print("New State: ");
+				updated.setState(scanner.nextLine());
 
-				System.out.print("State: ");
-				String newState = scanner.nextLine();
+				System.out.print("New Zip: ");
+				updated.setZip(scanner.nextLine());
 
-				System.out.print("Zip: ");
-				String newZip = scanner.nextLine();
+				System.out.print("New Phone: ");
+				updated.setPhoneNumber(scanner.nextLine());
 
-				System.out.print("Phone: ");
-				String newPhone = scanner.nextLine();
+				System.out.print("New Email: ");
+				updated.setEmail(scanner.nextLine());
 
-				System.out.print("Email: ");
-				String newEmail = scanner.nextLine();
+				boolean edited = service.editContactByName(editName, updated);
 
-				Contact updated = new Contact(null, newFirst, newLast, newAddress, newCity, newState, newZip, newPhone,
-						newEmail);
+				System.out.println(edited ? "Contact Updated!" : "Contact not found!");
 
-				service.editContactByName(nameToEdit, updated);
-				System.out.println("Contact Updated Successfully!");
 				break;
-				
+
 			case 3:
 				System.out.print("Enter First Name to Delete: ");
-				String nameToDelete = scanner.nextLine();
+				String deleteName = scanner.nextLine();
 
-				boolean deleted = service.deleteByFirstName(nameToDelete);
-				if (deleted) {
-					System.out.println("Contact Deleted Successfully!");
-				} else {
-					System.out.println("Contact Not Found!");
-				}
+				boolean deleted = service.deleteByFirstName(deleteName);
+
+				System.out.println(deleted ? "Contact Deleted!" : "Contact not found!");
 
 				break;
 
 			case 4:
-				System.out.println("\nAll Contacts-");
-				service.getAll().forEach(
-						c -> System.out.println(c.getFirstName() + " " + c.getLastName() + " | " + c.getPhoneNumber()));
+				List<Contact> contacts = service.getAll();
+				if (contacts.isEmpty()) {
+					System.out.println("No contacts found.");
+				} else {
+					contacts.forEach(c -> {
+						System.out.println("\nID: " + c.getId());
+						System.out.println("Name: " + c.getFirstName() + " " + c.getLastName());
+						System.out.println("City: " + c.getCity());
+						System.out.println("Phone: " + c.getPhoneNumber());
+					});
+				}
 				break;
+
+			case 5:
+				return;
 			}
-
-		} while (option != 5);
-
-		scanner.close();
+		}
 	}
 }
