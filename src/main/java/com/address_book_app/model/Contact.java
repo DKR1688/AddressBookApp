@@ -11,7 +11,6 @@ public class Contact {
 	private String phoneNumber;
 	private String email;
 
-	// Constructors
 	public Contact() {
 	}
 
@@ -31,11 +30,11 @@ public class Contact {
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -99,5 +98,5 @@ public class Contact {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 }

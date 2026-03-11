@@ -1,7 +1,6 @@
 package com.address_book_app.console;
 
 public class ContactPerson {
-
 	private String firstName;
 	private String lastName;
 	private String address;

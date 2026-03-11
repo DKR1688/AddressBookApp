@@ -2,14 +2,12 @@ package com.address_book_app.service;
 
 import com.address_book_app.model.Contact;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ContactService {
-
 	private final List<Contact> contactList = new ArrayList<>();
 	private final AtomicLong idGenerator = new AtomicLong(1);
 
