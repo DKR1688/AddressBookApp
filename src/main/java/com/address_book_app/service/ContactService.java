@@ -46,4 +46,28 @@ public class ContactService {
 		Contact contact = getById(id);
 		contactList.remove(contact);
 	}
+	
+	//UC3 --- editing existing contact by name
+	public Contact findByFirstName(String firstName) {
+		return contactList.stream().filter(c -> c.getFirstName().equalsIgnoreCase(firstName)).findFirst().orElse(null);
+	}
+
+	public boolean editContactByName(String firstName, Contact updatedContact) {
+		Contact existing = findByFirstName(firstName);
+
+		if (existing == null) {
+			return false;
+		}
+
+		existing.setFirstName(updatedContact.getFirstName());
+		existing.setLastName(updatedContact.getLastName());
+		existing.setAddress(updatedContact.getAddress());
+		existing.setCity(updatedContact.getCity());
+		existing.setState(updatedContact.getState());
+		existing.setZip(updatedContact.getZip());
+		existing.setPhoneNumber(updatedContact.getPhoneNumber());
+		existing.setEmail(updatedContact.getEmail());
+
+		return true;
+	}
 }
