@@ -15,10 +15,10 @@ public class ContactController {
 
 	@Autowired
 	private ContactService service;
-	
+
 	@GetMapping("/")
 	public String home() {
-	    return "Welcome to Address Book Application";
+		return "Welcome to Address Book Application";
 	}
 
 	@GetMapping

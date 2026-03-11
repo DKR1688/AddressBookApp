@@ -8,7 +8,6 @@ import java.util.List;
 
 @Service
 public class ContactService {
-
 	private List<Contact> contactList = new ArrayList<>();
 
 	public List<Contact> getAll() {
@@ -28,7 +27,6 @@ public class ContactService {
 
 		for (Contact c : contactList) {
 			if (c.getPhoneNumber().equals(phoneNumber)) {
-
 				c.setFirstName(updated.getFirstName());
 				c.setLastName(updated.getLastName());
 				c.setAddress(updated.getAddress());

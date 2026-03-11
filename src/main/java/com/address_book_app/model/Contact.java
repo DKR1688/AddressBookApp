@@ -1,7 +1,6 @@
 package com.address_book_app.model;
 
 public class Contact {
-
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -11,7 +10,6 @@ public class Contact {
 	private String phoneNumber;
 	private String email;
 
-	// Constructors
 	public Contact() {
 	}
 
@@ -90,5 +88,5 @@ public class Contact {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 }
