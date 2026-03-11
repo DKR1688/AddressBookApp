@@ -70,4 +70,16 @@ public class ContactService {
 
 		return true;
 	}
+	
+	public boolean deleteByFirstName(String firstName) {
+		Contact contact = contactList.stream().filter(c -> c.getFirstName().equalsIgnoreCase(firstName)).findFirst()
+				.orElse(null);
+
+		if (contact == null) {
+			return false;
+		}
+
+		contactList.remove(contact);
+		return true;
+	}
 }

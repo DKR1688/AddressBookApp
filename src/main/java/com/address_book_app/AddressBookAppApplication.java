@@ -20,8 +20,9 @@ public class AddressBookAppApplication {
 			System.out.println("\n----------- Address Book Menu ---------");
 			System.out.println("1. Add Contact");
 			System.out.println("2. Edit Contact");
-			System.out.println("3. View All Contacts");
-			System.out.println("4. Exit");
+			System.out.println("3. Delete Contact");
+			System.out.println("4. View All Contacts");
+			System.out.println("5. Exit");
 
 			System.out.print("Choose option- ");
 			option = scanner.nextInt();
@@ -102,15 +103,28 @@ public class AddressBookAppApplication {
 				service.editContactByName(nameToEdit, updated);
 				System.out.println("Contact Updated Successfully!");
 				break;
-
+				
 			case 3:
+				System.out.print("Enter First Name to Delete: ");
+				String nameToDelete = scanner.nextLine();
+
+				boolean deleted = service.deleteByFirstName(nameToDelete);
+				if (deleted) {
+					System.out.println("Contact Deleted Successfully!");
+				} else {
+					System.out.println("Contact Not Found!");
+				}
+
+				break;
+
+			case 4:
 				System.out.println("\nAll Contacts-");
 				service.getAll().forEach(
 						c -> System.out.println(c.getFirstName() + " " + c.getLastName() + " | " + c.getPhoneNumber()));
 				break;
 			}
 
-		} while (option != 4);
+		} while (option != 5);
 
 		scanner.close();
 	}
