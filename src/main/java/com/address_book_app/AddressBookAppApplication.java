@@ -4,7 +4,7 @@ import java.util.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import com.address_book_app.model.Contact;
+import com.address_book_app.model.*;
 import com.address_book_app.service.ContactService;
 
 @SpringBootApplication
@@ -14,7 +14,7 @@ public class AddressBookAppApplication {
 		ContactService service = context.getBean(ContactService.class);
 		Scanner scanner = new Scanner(System.in);
 
-		Map<String, List<Contact>> addressBookMap = new HashMap<>();
+		Map<String, AddressBook> addressBookMap = new HashMap<>();
 		while (true) {
 			System.out.println("\n------ ADDRESS BOOK SYSTEM ------");
 			System.out.println("1 Create Address Book");
@@ -30,7 +30,7 @@ public class AddressBookAppApplication {
 				System.out.print("Enter Address Book Name: ");
 				String bookName = scanner.nextLine();
 
-				addressBookMap.putIfAbsent(bookName, new ArrayList<>());
+				addressBookMap.putIfAbsent(bookName, new AddressBook(bookName));
 				System.out.println("Address Book created!");
 				break;
 
@@ -41,7 +41,8 @@ public class AddressBookAppApplication {
 				if (!addressBookMap.containsKey(selectBook)) {
 					System.out.println("Address Book not found!");
 				} else {
-					addressBookMenu(scanner, service);
+					AddressBook selectedBook = addressBookMap.get(selectBook);
+					addressBookMenu(scanner, service, selectedBook);
 				}
 				break;
 
@@ -56,7 +57,7 @@ public class AddressBookAppApplication {
 		}
 	}
 
-	private static void addressBookMenu(Scanner scanner, ContactService service) {
+	private static void addressBookMenu(Scanner scanner, ContactService service, AddressBook book) {
 		while (true) {
 			System.out.println("\n----- Address Book Menu -----");
 			System.out.println("1 Add Contact");
@@ -95,8 +96,7 @@ public class AddressBookAppApplication {
 				System.out.print("Email: ");
 				contact.setEmail(scanner.nextLine());
 
-				service.add(contact);
-
+				book.getContacts().add(contact);
 				System.out.println("Contact Added!");
 				break;
 
@@ -127,24 +127,36 @@ public class AddressBookAppApplication {
 				System.out.print("New Email: ");
 				updated.setEmail(scanner.nextLine());
 
-				boolean edited = service.editContactByName(editName, updated);
+				boolean edited = false;
 
+				for (Contact c : book.getContacts()) {
+				    if (c.getFirstName().equalsIgnoreCase(editName)) {
+				        c.setLastName(updated.getLastName());
+				        c.setAddress(updated.getAddress());
+				        c.setCity(updated.getCity());
+				        c.setState(updated.getState());
+				        c.setZip(updated.getZip());
+				        c.setPhoneNumber(updated.getPhoneNumber());
+				        c.setEmail(updated.getEmail());
+
+				        edited = true;
+				        break;
+				    }
+				}
+				
 				System.out.println(edited ? "Contact Updated!" : "Contact not found!");
-
 				break;
 
 			case 3:
 				System.out.print("Enter First Name to Delete: ");
 				String deleteName = scanner.nextLine();
 
-				boolean deleted = service.deleteByFirstName(deleteName);
-
+				boolean deleted = book.getContacts().removeIf(c -> c.getFirstName().equalsIgnoreCase(deleteName));
 				System.out.println(deleted ? "Contact Deleted!" : "Contact not found!");
-
 				break;
 
 			case 4:
-				List<Contact> contacts = service.getAll();
+				List<Contact> contacts = book.getContacts();
 				if (contacts.isEmpty()) {
 					System.out.println("No contacts found.");
 				} else {
