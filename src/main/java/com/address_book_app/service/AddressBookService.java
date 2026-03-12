@@ -8,35 +8,41 @@ import com.address_book_app.model.Contact;
 @Service
 public class AddressBookService {
 	private Map<String, AddressBook> addressBookMap = new HashMap<>();
+	private Long idCounter = 1L;
 
-	// create address book
 	public AddressBook createAddressBook(String name) {
 		AddressBook book = new AddressBook(name);
 		addressBookMap.put(name, book);
 		return book;
 	}
 
-	// get all address books
 	public Set<String> getAllAddressBooks() {
 		return addressBookMap.keySet();
 	}
 
-	// get address book
 	public AddressBook getAddressBook(String name) {
 		return addressBookMap.get(name);
 	}
 
-	// add contact
 	public Contact addContact(String bookName, Contact contact) {
-		AddressBook book = addressBookMap.get(bookName);
-		if (book == null)
-			throw new RuntimeException("AddressBook not found");
+	    AddressBook book = addressBookMap.get(bookName);
+	    if (book == null) {
+	    	throw new RuntimeException("AddressBook not found");
+	    }
 
-		book.getContacts().add(contact);
-		return contact;
+	    //UC7 to check duplicates
+		boolean duplicate = book.getContacts().stream()
+				.anyMatch(c -> c.getFirstName().equalsIgnoreCase(contact.getFirstName())
+						&& c.getLastName().equalsIgnoreCase(contact.getLastName()));
+		if (duplicate) {
+			throw new RuntimeException("Duplicate person entry not allowed");
+		}
+		
+	    contact.setId(idCounter++);
+	    book.getContacts().add(contact);
+	    return contact;
 	}
 
-	// get contacts
 	public List<Contact> getContacts(String bookName) {
 		AddressBook book = addressBookMap.get(bookName);
 		if (book == null)
@@ -44,8 +50,36 @@ public class AddressBookService {
 
 		return book.getContacts();
 	}
+	
+	public Contact getContactById(String bookName, Long id) {
+		AddressBook book = addressBookMap.get(bookName);
+		if (book == null)
+			throw new RuntimeException("AddressBook not found");
 
-	// delete contact
+		return book.getContacts().stream().filter(c -> c.getId().equals(id)).findFirst()
+				.orElseThrow(() -> new RuntimeException("Contact not found"));
+	}
+	
+	public Contact updateContact(String bookName, Long id, Contact updated) {
+		AddressBook book = addressBookMap.get(bookName);
+		if (book == null)
+			throw new RuntimeException("AddressBook not found");
+
+		Contact existing = book.getContacts().stream().filter(c -> c.getId().equals(id)).findFirst()
+				.orElseThrow(() -> new RuntimeException("Contact not found"));
+
+		existing.setFirstName(updated.getFirstName());
+		existing.setLastName(updated.getLastName());
+		existing.setAddress(updated.getAddress());
+		existing.setCity(updated.getCity());
+		existing.setState(updated.getState());
+		existing.setZip(updated.getZip());
+		existing.setPhoneNumber(updated.getPhoneNumber());
+		existing.setEmail(updated.getEmail());
+
+		return existing;
+	}
+
 	public boolean deleteContact(String bookName, Long id) {
 		AddressBook book = addressBookMap.get(bookName);
 		if (book == null)

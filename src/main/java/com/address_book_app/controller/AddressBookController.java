@@ -13,13 +13,11 @@ public class AddressBookController {
         this.service = service;
     }
 
-    // create address book
     @PostMapping("/{name}")
     public AddressBook create(@PathVariable String name) {
         return service.createAddressBook(name);
     }
 
-    // show address books
     @GetMapping
     public Set<String> getAll() {
         return service.getAllAddressBooks();

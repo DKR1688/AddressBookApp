@@ -1,5 +1,6 @@
 package com.address_book_app.model;
 
+import java.util.Objects;
 public class Contact {
 	private Long id;
 	private String firstName;
@@ -97,6 +98,25 @@ public class Contact {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	//UC7 to remove duplicate
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		Contact other = (Contact) obj;
+		return firstName.equalsIgnoreCase(other.firstName) && lastName.equalsIgnoreCase(other.lastName);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
 	}
 
 }

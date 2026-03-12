@@ -15,18 +15,26 @@ public class ContactController {
 		this.service = service;
 	}
 
-	// getting all contacts
 	@GetMapping
 	public List<Contact> getAll(@PathVariable String bookName) {
 		return service.getContacts(bookName);
 	}
+	
+	@GetMapping("/{id}")
+	public Contact getById(@PathVariable String bookName, @PathVariable Long id) {
+	    return service.getContactById(bookName, id);
+	}
 
-	// here adding contact
 	@PostMapping
 	public Contact add(@PathVariable String bookName, @RequestBody Contact contact) {
 		return service.addContact(bookName, contact);
 	}
 
+	@PutMapping("/{id}")
+	public Contact update(@PathVariable String bookName, @PathVariable Long id, @RequestBody Contact updatedContact) {
+		return service.updateContact(bookName, id, updatedContact);
+	}
+	
 	// it's to delete contact
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete(@PathVariable String bookName, @PathVariable Long id) {

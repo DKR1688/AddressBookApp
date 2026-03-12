@@ -4,13 +4,12 @@ import com.address_book_app.model.Contact;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ContactService {
 	//UC5- it's local list to store multiple person in address book
 	private final List<Contact> contactList = new ArrayList<>();
-	private final AtomicLong idGenerator = new AtomicLong(1);
+	private Long idCounter = 1L;
 
 	public List<Contact> getAll() {
 		return contactList;
@@ -22,7 +21,7 @@ public class ContactService {
 	}
 
 	public Contact add(Contact contact) {
-		contact.setId(idGenerator.getAndIncrement());
+		contact.setId(idCounter++);
 		contactList.add(contact);
 		return contact;
 	}
