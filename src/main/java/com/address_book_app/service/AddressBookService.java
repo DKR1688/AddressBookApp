@@ -121,4 +121,23 @@ public class AddressBookService {
 				java.util.stream.Collectors.toList()
 			));
 	}
+	
+	//UC10 - Get count of persons by city or state across all address books
+	public Map<String, Long> getCountByCity() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.collect(java.util.stream.Collectors.groupingBy(
+				contact -> contact.getCity() != null ? contact.getCity() : "Unknown",
+				java.util.stream.Collectors.counting()
+			));
+	}
+	
+	public Map<String, Long> getCountByState() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.collect(java.util.stream.Collectors.groupingBy(
+				contact -> contact.getState() != null ? contact.getState() : "Unknown",
+				java.util.stream.Collectors.counting()
+			));
+	}
 }

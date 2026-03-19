@@ -25,7 +25,9 @@ public class AddressBookAppApplication {
 			System.out.println("5 Search by State");
 			System.out.println("6 View All Persons by City");
 			System.out.println("7 View All Persons by State");
-			System.out.println("8 Exit");
+			System.out.println("8 Count Persons by City");
+			System.out.println("9 Count Persons by State");
+			System.out.println("10 Exit");
 
 			int choice = scanner.nextInt();
 			scanner.nextLine();
@@ -97,7 +99,7 @@ public class AddressBookAppApplication {
 				break;
 
 			case 6:
-				System.out.println("\n------ Persons Grouped by City (UC9) ------");
+				System.out.println("\n------ Persons Grouped by City ------");
 				Map<String, List<Contact>> personsByCity = addressBookService.getPersonsByCity();
 				if (personsByCity.isEmpty()) {
 					System.out.println("No persons found.");
@@ -112,7 +114,7 @@ public class AddressBookAppApplication {
 				break;
 
 			case 7:
-				System.out.println("\n------ Persons Grouped by State (UC9) ------");
+				System.out.println("\n------ Persons Grouped by State ------");
 				Map<String, List<Contact>> personsByState = addressBookService.getPersonsByState();
 				if (personsByState.isEmpty()) {
 					System.out.println("No persons found.");
@@ -127,6 +129,30 @@ public class AddressBookAppApplication {
 				break;
 
 			case 8:
+				System.out.println("\n------ Count of Persons by City ------");
+				Map<String, Long> countByCity = addressBookService.getCountByCity();
+				if (countByCity.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					countByCity.forEach((city, count) -> {
+						System.out.println(city + ": " + count + " person(s)");
+					});
+				}
+				break;
+
+			case 9:
+				System.out.println("\n------ Count of Persons by State ------");
+				Map<String, Long> countByState = addressBookService.getCountByState();
+				if (countByState.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					countByState.forEach((state, count) -> {
+						System.out.println(state + ": " + count + " person(s)");
+					});
+				}
+				break;
+
+			case 10:
 				System.exit(0);
 			}
 		}

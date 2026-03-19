@@ -67,4 +67,15 @@ public class ContactController {
 	public Map<String, List<Contact>> viewPersonsByState() {
 		return service.getPersonsByState();
 	}
+	
+	// UC10 - Count persons by city or stateacross all address books
+	@GetMapping("/count/by-city")
+	public Map<String, Long> countByCity() {
+		return service.getCountByCity();
+	}
+	
+	@GetMapping("/count/by-state")
+	public Map<String, Long> countByState() {
+		return service.getCountByState();
+	}
 }
