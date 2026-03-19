@@ -88,7 +88,7 @@ public class AddressBookService {
 		return book.getContacts().removeIf(c -> c.getId().equals(id));
 	}
 	
-	//UC8 - Search persons by city across multiple address books
+	//UC8 - Search persons by city or sate across multiple address books
 	public List<Contact> searchPersonsByCity(String city) {
 		return addressBookMap.values().stream()
 			.flatMap(book -> book.getContacts().stream())
@@ -96,11 +96,29 @@ public class AddressBookService {
 			.toList();
 	}
 	
-	//UC8 - Search persons by state across multiple address books
 	public List<Contact> searchPersonsByState(String state) {
 		return addressBookMap.values().stream()
 			.flatMap(book -> book.getContacts().stream())
 			.filter(contact -> contact.getState() != null && contact.getState().equalsIgnoreCase(state))
 			.toList();
+	}
+	
+	//UC9 - View persons by city or sate
+	public Map<String, List<Contact>> getPersonsByCity() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.collect(java.util.stream.Collectors.groupingBy(
+				contact -> contact.getCity() != null ? contact.getCity() : "Unknown",
+				java.util.stream.Collectors.toList()
+			));
+	}
+	
+	public Map<String, List<Contact>> getPersonsByState() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.collect(java.util.stream.Collectors.groupingBy(
+				contact -> contact.getState() != null ? contact.getState() : "Unknown",
+				java.util.stream.Collectors.toList()
+			));
 	}
 }

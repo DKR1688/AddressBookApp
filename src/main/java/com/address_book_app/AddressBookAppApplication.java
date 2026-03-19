@@ -23,7 +23,9 @@ public class AddressBookAppApplication {
 			System.out.println("3 Display Address Books");
 			System.out.println("4 Search by City");
 			System.out.println("5 Search by State");
-			System.out.println("6 Exit");
+			System.out.println("6 View All Persons by City");
+			System.out.println("7 View All Persons by State");
+			System.out.println("8 Exit");
 
 			int choice = scanner.nextInt();
 			scanner.nextLine();
@@ -95,6 +97,36 @@ public class AddressBookAppApplication {
 				break;
 
 			case 6:
+				System.out.println("\n------ Persons Grouped by City (UC9) ------");
+				Map<String, List<Contact>> personsByCity = addressBookService.getPersonsByCity();
+				if (personsByCity.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					personsByCity.forEach((city, contacts) -> {
+						System.out.println("\n===== City: " + city + " (" + contacts.size() + " persons) =====");
+						contacts.forEach(c -> {
+							System.out.println("  - " + c.getFirstName() + " " + c.getLastName() + " | Phone: " + c.getPhoneNumber());
+						});
+					});
+				}
+				break;
+
+			case 7:
+				System.out.println("\n------ Persons Grouped by State (UC9) ------");
+				Map<String, List<Contact>> personsByState = addressBookService.getPersonsByState();
+				if (personsByState.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					personsByState.forEach((state, contacts) -> {
+						System.out.println("\n===== State: " + state + " (" + contacts.size() + " persons) =====");
+						contacts.forEach(c -> {
+							System.out.println("  - " + c.getFirstName() + " " + c.getLastName() + " | Phone: " + c.getPhoneNumber());
+						});
+					});
+				}
+				break;
+
+			case 8:
 				System.exit(0);
 			}
 		}
