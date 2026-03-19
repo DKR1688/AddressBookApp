@@ -45,4 +45,16 @@ public class ContactController {
 
 		return ResponseEntity.ok("Deleted Successfully");
 	}
+	
+	// UC8 - Search persons by city across all address books
+	@GetMapping("/search/city/{city}")
+	public List<Contact> searchByCity(@PathVariable String city) {
+		return service.searchPersonsByCity(city);
+	}
+	
+	// UC8 - Search persons by state across all address books
+	@GetMapping("/search/state/{state}")
+	public List<Contact> searchByState(@PathVariable String state) {
+		return service.searchPersonsByState(state);
+	}
 }

@@ -12,6 +12,7 @@ public class AddressBookAppApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(AddressBookAppApplication.class, args);
 		ContactService service = context.getBean(ContactService.class);
+		com.address_book_app.service.AddressBookService addressBookService = context.getBean(com.address_book_app.service.AddressBookService.class);
 		Scanner scanner = new Scanner(System.in);
 
 		Map<String, AddressBook> addressBookMap = new HashMap<>();
@@ -20,7 +21,9 @@ public class AddressBookAppApplication {
 			System.out.println("1 Create Address Book");
 			System.out.println("2 Select Address Book");
 			System.out.println("3 Display Address Books");
-			System.out.println("4 Exit");
+			System.out.println("4 Search by City");
+			System.out.println("5 Search by State");
+			System.out.println("6 Exit");
 
 			int choice = scanner.nextInt();
 			scanner.nextLine();
@@ -52,6 +55,46 @@ public class AddressBookAppApplication {
 				break;
 
 			case 4:
+				System.out.print("Enter City to Search: ");
+				String searchCity = scanner.nextLine();
+				List<Contact> cityResults = addressBookService.searchPersonsByCity(searchCity);
+				if (cityResults.isEmpty()) {
+					System.out.println("No persons found in city: " + searchCity);
+				} else {
+					System.out.println("\n--- Search Results for City: " + searchCity + " ---");
+					cityResults.forEach(c -> {
+						System.out.println("\nName: " + c.getFirstName() + " " + c.getLastName());
+						System.out.println("Address: " + c.getAddress());
+						System.out.println("City: " + c.getCity());
+						System.out.println("State: " + c.getState());
+						System.out.println("Zip: " + c.getZip());
+						System.out.println("Phone: " + c.getPhoneNumber());
+						System.out.println("Email: " + c.getEmail());
+					});
+				}
+				break;
+
+			case 5:
+				System.out.print("Enter State to Search: ");
+				String searchState = scanner.nextLine();
+				List<Contact> stateResults = addressBookService.searchPersonsByState(searchState);
+				if (stateResults.isEmpty()) {
+					System.out.println("No persons found in state: " + searchState);
+				} else {
+					System.out.println("\n--- Search Results for State: " + searchState + " ---");
+					stateResults.forEach(c -> {
+						System.out.println("\nName: " + c.getFirstName() + " " + c.getLastName());
+						System.out.println("Address: " + c.getAddress());
+						System.out.println("City: " + c.getCity());
+						System.out.println("State: " + c.getState());
+						System.out.println("Zip: " + c.getZip());
+						System.out.println("Phone: " + c.getPhoneNumber());
+						System.out.println("Email: " + c.getEmail());
+					});
+				}
+				break;
+
+			case 6:
 				System.exit(0);
 			}
 		}
