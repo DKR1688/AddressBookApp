@@ -118,5 +118,13 @@ public class Contact {
 	public int hashCode() {
 		return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
 	}
+	
+	//UC11 - Override toString() to print person entry
+	@Override
+	public String toString() {
+		return "Contact [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
+				+ ", city=" + city + ", state=" + state + ", zip=" + zip + ", phoneNumber=" + phoneNumber
+				+ ", email=" + email + "]";
+	}
 
 }

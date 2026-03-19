@@ -21,13 +21,17 @@ public class AddressBookAppApplication {
 			System.out.println("1 Create Address Book");
 			System.out.println("2 Select Address Book");
 			System.out.println("3 Display Address Books");
-			System.out.println("4 Search by City");
-			System.out.println("5 Search by State");
+			System.out.println("4 Search by City (UC8)");
+			System.out.println("5 Search by State (UC8)");
 			System.out.println("6 View All Persons by City");
 			System.out.println("7 View All Persons by State");
 			System.out.println("8 Count Persons by City");
 			System.out.println("9 Count Persons by State");
-			System.out.println("10 Exit");
+			System.out.println("10 Sort All Persons by Name");
+			System.out.println("11 Sort All Persons by City");
+			System.out.println("12 Sort All Persons by State");
+			System.out.println("13 Sort All Persons by Zip");
+			System.out.println("14 Exit");
 
 			int choice = scanner.nextInt();
 			scanner.nextLine();
@@ -49,7 +53,7 @@ public class AddressBookAppApplication {
 					System.out.println("Address Book not found!");
 				} else {
 					AddressBook selectedBook = addressBookMap.get(selectBook);
-					addressBookMenu(scanner, service, selectedBook);
+					addressBookMenu(scanner, service, selectedBook, addressBookService);
 				}
 				break;
 
@@ -153,19 +157,63 @@ public class AddressBookAppApplication {
 				break;
 
 			case 10:
+				System.out.println("\n------ All Persons Sorted by Name ------");
+				List<Contact> sortedPersons = addressBookService.getSortedPersonsByName();
+				if (sortedPersons.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					sortedPersons.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 11:
+				System.out.println("\n------ All Persons Sorted by City ------");
+				List<Contact> sortedByCity = addressBookService.getSortedPersonsByCity();
+				if (sortedByCity.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					sortedByCity.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 12:
+				System.out.println("\n------ All Persons Sorted by State ------");
+				List<Contact> sortedByState = addressBookService.getSortedPersonsByState();
+				if (sortedByState.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					sortedByState.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 13:
+				System.out.println("\n------ All Persons Sorted by Zip ------");
+				List<Contact> sortedByZip = addressBookService.getSortedPersonsByZip();
+				if (sortedByZip.isEmpty()) {
+					System.out.println("No persons found.");
+				} else {
+					sortedByZip.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 14:
 				System.exit(0);
 			}
 		}
 	}
 
-	private static void addressBookMenu(Scanner scanner, ContactService service, AddressBook book) {
+	private static void addressBookMenu(Scanner scanner, ContactService service, AddressBook book, com.address_book_app.service.AddressBookService addressBookService) {
 		while (true) {
 			System.out.println("\n----- Address Book Menu -----");
 			System.out.println("1 Add Contact");
 			System.out.println("2 Edit Contact (by First Name)");
 			System.out.println("3 Delete Contact (by First Name)");
 			System.out.println("4 Display Contacts");
-			System.out.println("5 Back");
+			System.out.println("5 Display Contacts Sorted by Name (UC11)");
+			System.out.println("6 Display Contacts Sorted by City (UC12)");
+			System.out.println("7 Display Contacts Sorted by State (UC12)");
+			System.out.println("8 Display Contacts Sorted by Zip (UC12)");
+			System.out.println("9 Back");
 
 			int choice = scanner.nextInt();
 			scanner.nextLine();
@@ -271,6 +319,46 @@ public class AddressBookAppApplication {
 				break;
 
 			case 5:
+				System.out.println("\n------ Contacts Sorted by Name ------");
+				List<Contact> sortedContacts = addressBookService.getSortedPersonsByNameInBook(book.getName());
+				if (sortedContacts.isEmpty()) {
+					System.out.println("No contacts found.");
+				} else {
+					sortedContacts.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 6:
+				System.out.println("\n------ Contacts Sorted by City ------");
+				List<Contact> sortedByCity = addressBookService.getSortedPersonsByCityInBook(book.getName());
+				if (sortedByCity.isEmpty()) {
+					System.out.println("No contacts found.");
+				} else {
+					sortedByCity.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 7:
+				System.out.println("\n------ Contacts Sorted by State ------");
+				List<Contact> sortedByState = addressBookService.getSortedPersonsByStateInBook(book.getName());
+				if (sortedByState.isEmpty()) {
+					System.out.println("No contacts found.");
+				} else {
+					sortedByState.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 8:
+				System.out.println("\n------ Contacts Sorted by Zip ------");
+				List<Contact> sortedByZip = addressBookService.getSortedPersonsByZipInBook(book.getName());
+				if (sortedByZip.isEmpty()) {
+					System.out.println("No contacts found.");
+				} else {
+					sortedByZip.forEach(c -> System.out.println(c));
+				}
+				break;
+
+			case 9:
 				return;
 			}
 		}

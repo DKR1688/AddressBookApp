@@ -140,4 +140,159 @@ public class AddressBookService {
 				java.util.stream.Collectors.counting()
 			));
 	}
+	
+	//UC11 - Sort persons by name across all address books and in a specific address book usin streams
+	public List<Contact> getSortedPersonsByName() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.sorted((c1, c2) -> {
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
+	
+	public List<Contact> getSortedPersonsByNameInBook(String bookName) {
+		AddressBook book = addressBookMap.get(bookName);
+		if (book == null)
+			throw new RuntimeException("AddressBook not found");
+		
+		return book.getContacts().stream()
+			.sorted((c1, c2) -> {
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
+	
+	//UC12 - Sort persons by city or state or Zip across all address books
+	public List<Contact> getSortedPersonsByCity() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.sorted((c1, c2) -> {
+				String city1 = c1.getCity() != null ? c1.getCity() : "";
+				String city2 = c2.getCity() != null ? c2.getCity() : "";
+				int cityComparison = city1.compareTo(city2);
+				if (cityComparison != 0) {
+					return cityComparison;
+				}
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
+
+	public List<Contact> getSortedPersonsByState() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.sorted((c1, c2) -> {
+				String state1 = c1.getState() != null ? c1.getState() : "";
+				String state2 = c2.getState() != null ? c2.getState() : "";
+				int stateComparison = state1.compareTo(state2);
+				if (stateComparison != 0) {
+					return stateComparison;
+				}
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
+	
+	public List<Contact> getSortedPersonsByZip() {
+		return addressBookMap.values().stream()
+			.flatMap(book -> book.getContacts().stream())
+			.sorted((c1, c2) -> {
+				String zip1 = c1.getZip() != null ? c1.getZip() : "";
+				String zip2 = c2.getZip() != null ? c2.getZip() : "";
+				int zipComparison = zip1.compareTo(zip2);
+				if (zipComparison != 0) {
+					return zipComparison;
+				}
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
+	
+	//UC12 - Sort persons in a specific address book by city or state or Zip
+	public List<Contact> getSortedPersonsByCityInBook(String bookName) {
+		AddressBook book = addressBookMap.get(bookName);
+		if (book == null)
+			throw new RuntimeException("AddressBook not found");
+		
+		return book.getContacts().stream()
+			.sorted((c1, c2) -> {
+				String city1 = c1.getCity() != null ? c1.getCity() : "";
+				String city2 = c2.getCity() != null ? c2.getCity() : "";
+				int cityComparison = city1.compareTo(city2);
+				if (cityComparison != 0) {
+					return cityComparison;
+				}
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
+	
+	public List<Contact> getSortedPersonsByStateInBook(String bookName) {
+		AddressBook book = addressBookMap.get(bookName);
+		if (book == null)
+			throw new RuntimeException("AddressBook not found");
+		
+		return book.getContacts().stream()
+			.sorted((c1, c2) -> {
+				String state1 = c1.getState() != null ? c1.getState() : "";
+				String state2 = c2.getState() != null ? c2.getState() : "";
+				int stateComparison = state1.compareTo(state2);
+				if (stateComparison != 0) {
+					return stateComparison;
+				}
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
+	
+	public List<Contact> getSortedPersonsByZipInBook(String bookName) {
+		AddressBook book = addressBookMap.get(bookName);
+		if (book == null)
+			throw new RuntimeException("AddressBook not found");
+		
+		return book.getContacts().stream()
+			.sorted((c1, c2) -> {
+				String zip1 = c1.getZip() != null ? c1.getZip() : "";
+				String zip2 = c2.getZip() != null ? c2.getZip() : "";
+				int zipComparison = zip1.compareTo(zip2);
+				if (zipComparison != 0) {
+					return zipComparison;
+				}
+				int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+				if (firstNameComparison != 0) {
+					return firstNameComparison;
+				}
+				return c1.getLastName().compareTo(c2.getLastName());
+			})
+			.toList();
+	}
 }
