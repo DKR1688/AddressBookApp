@@ -121,4 +121,67 @@ public class ContactController {
 	public List<Contact> getSortedByZip(@PathVariable String bookName) {
 		return service.getSortedPersonsByZipInBook(bookName);
 	}
+	
+	// UC13 - Read/Write Address Book with Persons Contact into a File using File IO
+	@PostMapping("/file/write")
+	public ResponseEntity<String> writeAddressBookToFile(@PathVariable String bookName, @RequestParam String filePath) {
+		try {
+			service.writeAddressBookToFile(bookName, filePath);
+			return ResponseEntity.ok("Address book written to file successfully: " + filePath);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Error writing to file: " + e.getMessage());
+		}
+	}
+	
+	@GetMapping("/file/read")
+	public ResponseEntity<String> readAddressBookFromFile(@RequestParam String filePath) {
+		try {
+			String content = service.readAddressBookFromFile(filePath);
+			return ResponseEntity.ok(content);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Error reading from file: " + e.getMessage());
+		}
+	}
+	
+	// UC14 - Read/Write as CSV File (OpenCSV Library)
+	@PostMapping("/csv/write")
+	public ResponseEntity<String> writeAddressBookToCSV(@PathVariable String bookName, @RequestParam String filePath) {
+		try {
+			service.writeAddressBookToCSV(bookName, filePath);
+			return ResponseEntity.ok("Address book written to CSV file successfully: " + filePath);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Error writing to CSV: " + e.getMessage());
+		}
+	}
+	
+	@GetMapping("/csv/read")
+	public ResponseEntity<String> readAddressBookFromCSV(@PathVariable String bookName, @RequestParam String filePath) {
+		try {
+			service.readAddressBookFromCSV(bookName, filePath);
+			return ResponseEntity.ok("Address book loaded from CSV file successfully: " + filePath);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Error reading from CSV: " + e.getMessage());
+		}
+	}
+	
+	// UC15 - Read/Write as JSON File (GSON Library)
+	@PostMapping("/json/write")
+	public ResponseEntity<String> writeAddressBookToJSON(@PathVariable String bookName, @RequestParam String filePath) {
+		try {
+			service.writeAddressBookToJSON(bookName, filePath);
+			return ResponseEntity.ok("Address book written to JSON file successfully: " + filePath);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Error writing to JSON: " + e.getMessage());
+		}
+	}
+	
+	@GetMapping("/json/read")
+	public ResponseEntity<String> readAddressBookFromJSON(@PathVariable String bookName, @RequestParam String filePath) {
+		try {
+			service.readAddressBookFromJSON(bookName, filePath);
+			return ResponseEntity.ok("Address book loaded from JSON file successfully: " + filePath);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Error reading from JSON: " + e.getMessage());
+		}
+	}
 }

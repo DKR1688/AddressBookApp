@@ -15,14 +15,13 @@ public class AddressBookAppApplication {
 		com.address_book_app.service.AddressBookService addressBookService = context.getBean(com.address_book_app.service.AddressBookService.class);
 		Scanner scanner = new Scanner(System.in);
 
-		Map<String, AddressBook> addressBookMap = new HashMap<>();
 		while (true) {
 			System.out.println("\n------ ADDRESS BOOK SYSTEM ------");
 			System.out.println("1 Create Address Book");
 			System.out.println("2 Select Address Book");
 			System.out.println("3 Display Address Books");
-			System.out.println("4 Search by City (UC8)");
-			System.out.println("5 Search by State (UC8)");
+			System.out.println("4 Search by City");
+			System.out.println("5 Search by State");
 			System.out.println("6 View All Persons by City");
 			System.out.println("7 View All Persons by State");
 			System.out.println("8 Count Persons by City");
@@ -41,7 +40,7 @@ public class AddressBookAppApplication {
 				System.out.print("Enter Address Book Name: ");
 				String bookName = scanner.nextLine();
 
-				addressBookMap.putIfAbsent(bookName, new AddressBook(bookName));
+				addressBookService.createAddressBook(bookName);
 				System.out.println("Address Book created!");
 				break;
 
@@ -49,17 +48,17 @@ public class AddressBookAppApplication {
 				System.out.print("Enter Address Book Name: ");
 				String selectBook = scanner.nextLine();
 
-				if (!addressBookMap.containsKey(selectBook)) {
+				AddressBook selectedBook = addressBookService.getAddressBook(selectBook);
+				if (selectedBook == null) {
 					System.out.println("Address Book not found!");
 				} else {
-					AddressBook selectedBook = addressBookMap.get(selectBook);
 					addressBookMenu(scanner, service, selectedBook, addressBookService);
 				}
 				break;
 
 			case 3:
 				System.out.println("Available Address Books:");
-				addressBookMap.keySet().forEach(System.out::println);
+				addressBookService.getAllAddressBooks().forEach(System.out::println);
 				break;
 
 			case 4:
@@ -209,11 +208,17 @@ public class AddressBookAppApplication {
 			System.out.println("2 Edit Contact (by First Name)");
 			System.out.println("3 Delete Contact (by First Name)");
 			System.out.println("4 Display Contacts");
-			System.out.println("5 Display Contacts Sorted by Name (UC11)");
-			System.out.println("6 Display Contacts Sorted by City (UC12)");
-			System.out.println("7 Display Contacts Sorted by State (UC12)");
-			System.out.println("8 Display Contacts Sorted by Zip (UC12)");
-			System.out.println("9 Back");
+			System.out.println("5 Display Contacts Sorted by Name");
+			System.out.println("6 Display Contacts Sorted by City");
+			System.out.println("7 Display Contacts Sorted by State");
+			System.out.println("8 Display Contacts Sorted by Zip");
+			System.out.println("9 Write to Text File");
+			System.out.println("10 Read from Text File");
+			System.out.println("11 Write to CSV File");
+			System.out.println("12 Read from CSV File");
+			System.out.println("13 Write to JSON File");
+			System.out.println("14 Read from JSON File");
+			System.out.println("15 Back");
 
 			int choice = scanner.nextInt();
 			scanner.nextLine();
@@ -359,6 +364,73 @@ public class AddressBookAppApplication {
 				break;
 
 			case 9:
+				System.out.print("Enter file path to write: ");
+				String writeFilePath = scanner.nextLine();
+				try {
+					addressBookService.writeAddressBookToFile(book.getName(), writeFilePath);
+					System.out.println("Address book written to text file successfully!");
+				} catch (Exception e) {
+					System.out.println("Error writing to file: " + e.getMessage());
+				}
+				break;
+
+			case 10:
+				System.out.print("Enter file path to read: ");
+				String readFilePath = scanner.nextLine();
+				try {
+					String content = addressBookService.readAddressBookFromFile(readFilePath);
+					System.out.println("\n--- File Content ---");
+					System.out.println(content);
+				} catch (Exception e) {
+					System.out.println("Error reading from file: " + e.getMessage());
+				}
+				break;
+
+			case 11:
+				System.out.print("Enter CSV file path to write: ");
+				String csvWritePath = scanner.nextLine();
+				try {
+					addressBookService.writeAddressBookToCSV(book.getName(), csvWritePath);
+					System.out.println("Address book written to CSV file successfully!");
+				} catch (Exception e) {
+					System.out.println("Error writing to CSV: " + e.getMessage());
+				}
+				break;
+
+			case 12:
+				System.out.print("Enter CSV file path to read: ");
+				String csvReadPath = scanner.nextLine();
+				try {
+					addressBookService.readAddressBookFromCSV(book.getName(), csvReadPath);
+					System.out.println("Address book loaded from CSV file successfully!");
+				} catch (Exception e) {
+					System.out.println("Error reading from CSV: " + e.getMessage());
+				}
+				break;
+
+			case 13:
+				System.out.print("Enter JSON file path to write: ");
+				String jsonWritePath = scanner.nextLine();
+				try {
+					addressBookService.writeAddressBookToJSON(book.getName(), jsonWritePath);
+					System.out.println("Address book written to JSON file successfully!");
+				} catch (Exception e) {
+					System.out.println("Error writing to JSON: " + e.getMessage());
+				}
+				break;
+
+			case 14:
+				System.out.print("Enter JSON file path to read: ");
+				String jsonReadPath = scanner.nextLine();
+				try {
+					addressBookService.readAddressBookFromJSON(book.getName(), jsonReadPath);
+					System.out.println("Address book loaded from JSON file successfully!");
+				} catch (Exception e) {
+					System.out.println("Error reading from JSON: " + e.getMessage());
+				}
+				break;
+
+			case 15:
 				return;
 			}
 		}
